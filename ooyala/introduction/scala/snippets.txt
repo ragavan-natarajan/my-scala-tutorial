@@ -1,0 +1,109 @@
+val inputFile = sc.textFile("file:///User/rnatarajan/wiki/random_subset_10percent.txt")
+
+case class Wiki(title: String, text: String)
+
+val wiki = inputFile.map{ line => { 
+    val columns = line.split("\t")
+    Wiki(columns(0), columns(1))
+}}.toDS
+
+val wordCount = wiki.flatMap{ Wiki(title, text) => { 
+    text.split(" ").map{ word => (word, 1) }.
+    reduceByKey(_ + _) }}.toDF("word", "word_count")
+
+wordCount.sort($"word_count".desc).show
+
+Data split into partitions
+==========================
+
+    Partition 1
++------+------------+
+| word | word_count |
++------+------------+
+| the  |          1 |
+| have |          1 |
+| the  |          1 |
++------+------------+
+
+    Partition 2
++--------+------------+
+|  word  | word_count |
++--------+------------+
+| have   |          1 |
+| the    |          1 |
+| animal |          1 |
+| have   |          1 |
++--------+------------+
+
+    Partition 3
++---------+------------+
+|  word   | word_count |
++---------+------------+
+| cheetah |          1 |
+| the     |          1 |
+| have    |          1 |
++---------+------------+
+
+
+Reduced within partitions (before shuffling)
+============================================
+
+     Reduced 1
++------+------------+
+| word | word_count |
++------+------------+
+| the  |          2 |
+| have |          1 |
++------+------------+
+
+    Reduced 2
++--------+------------+
+|  word  | word_count |
++--------+------------+
+| have   |          2 |
+| the    |          1 |
+| animal |          1 |
++--------+------------+
+
+    Reduced 3
++---------+------------+
+|  word   | word_count |
++---------+------------+
+| cheetah |          1 |
+| the     |          1 |
+| have    |          1 |
++---------+------------+
+
+Shuffling and further reduction
+===============================
+
+     Shuffled 1
++------+------------+
+| word | word_count |
++------+------------+
+| the  |          2 |
+| the  |          1 |
+| the  |          1 |
++------+------------+
+| the  |          4 | <= reduced again
++------+------------+
+
+    Reduced 2
++--------+------------+
+|  word  | word_count |
++--------+------------+
+| have   |          2 |
+| have   |          1 |
+| have   |          1 |
+| animal |          1 |
++--------+------------+
+| have   |          4 | <= reduced again
+| animal |          1 |
++--------+------------+
+
+    Reduced 3
++---------+------------+
+|  word   | word_count |
++---------+------------+
+| cheetah |          1 | 
++---------+------------+
