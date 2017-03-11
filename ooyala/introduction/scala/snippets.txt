@@ -88,7 +88,7 @@ Shuffling and further reduction
 | the  |          4 | <= reduced again
 +------+------------+
 
-    Reduced 2
+     Shuffled 2
 +--------+------------+
 |  word  | word_count |
 +--------+------------+
@@ -101,7 +101,7 @@ Shuffling and further reduction
 | animal |          1 |
 +--------+------------+
 
-    Reduced 3
+     Shuffled 3
 +---------+------------+
 |  word   | word_count |
 +---------+------------+
