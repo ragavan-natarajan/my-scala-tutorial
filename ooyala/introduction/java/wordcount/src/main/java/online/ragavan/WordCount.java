@@ -10,15 +10,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Counts the word in the second column in a tab-delimited two column file.
+ * Computes the total group count of all the words in the second column in a
+ * tab-delimited two column file.
  *
  * The first and second columns represent the article title and text,
  * respectively. This code merely takes the second column across all rows, and
  * computes for each word, the total occurrence of that word across the entire
  * file.
  *
- * Author: Ragavan Natarajan
- * Email: n.ragav@gmail.com
+ * Author: Ragavan Natarajan Email: n.ragav@gmail.com
  */
 public class WordCount {
 
