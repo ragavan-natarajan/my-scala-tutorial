@@ -7,6 +7,15 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.Random;
 
+/**
+ * The purpose of this code is to demonstrate how hiding, one of the
+ * important concepts in Object Oriented programming, could cause
+ * hard-to-find bugs that are caused due to mutable shared state the object
+ * maintains across concurrent threads.
+ *
+ * author: Ragavan Natarajan
+ * email: n.ragav@gmail.com
+ */
 class Hiding {
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -24,6 +33,8 @@ class Hiding {
     public static void main(String[] argv) {
 
         Hiding hiding = new Hiding();
+
+        // For some randomized number generation
         Random rand = new Random();
 
         /*
@@ -57,5 +68,4 @@ class Hiding {
             thread.start();
         }
     }
-
 }
