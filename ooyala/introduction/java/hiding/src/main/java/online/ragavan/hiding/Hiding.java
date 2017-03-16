@@ -60,7 +60,12 @@ class Hiding {
                     int year = rand.nextInt(50) + 2000;
                     int month = rand.nextInt(12) + 1;
                     int day = rand.nextInt(27) + 1;
-                    String date = year + "-" + month + "-" + day;
+
+                    // Zero prefix for single digit day and month
+                    String date = year + "-" + 
+                        ( month < 10 ? "0" + month: month +"") + "-" + 
+                        ( day < 10 ? "0" + day: day + "");
+
                     System.out.println("Input : " + date + 
                             "; Output: " + hiding.parseDate(date));
                 }
